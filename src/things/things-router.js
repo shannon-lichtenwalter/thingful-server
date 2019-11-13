@@ -1,6 +1,6 @@
 const express = require('express')
 const ThingsService = require('./things-service')
-
+const { requireAuth } = require('../middleware/basic-auth');
 const thingsRouter = express.Router()
 
 thingsRouter
@@ -15,12 +15,14 @@ thingsRouter
 
 thingsRouter
   .route('/:thing_id')
+  .all(requireAuth)
   .all(checkThingExists)
   .get((req, res) => {
     res.json(ThingsService.serializeThing(res.thing))
   })
 
 thingsRouter.route('/:thing_id/reviews/')
+  .all(requireAuth)
   .all(checkThingExists)
   .get((req, res, next) => {
     ThingsService.getReviewsForThing(
@@ -36,6 +38,7 @@ thingsRouter.route('/:thing_id/reviews/')
 /* async/await syntax for promises */
 async function checkThingExists(req, res, next) {
   try {
+    console.log(req.params.thing_id);
     const thing = await ThingsService.getById(
       req.app.get('db'),
       req.params.thing_id
