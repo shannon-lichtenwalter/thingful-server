@@ -88,11 +88,9 @@ describe('Things Endpoints', function () {
   describe(`GET /api/things/:thing_id`, () => {
     const testUsers = helpers.makeUsersArray();
     context(`Given no things`, () => {
-      beforeEach('insert Users only', () => {
-        return db
-          .into('thingful_users')
-          .insert(testUsers)
-      })
+      beforeEach('insert Users only', () => 
+        helpers.seedUsers(db, testUsers)
+      )
       it(`responds with 404`, () => {
         const thingId = 123456
         return supertest(app)
@@ -158,11 +156,9 @@ describe('Things Endpoints', function () {
   describe(`GET /api/things/:thing_id/reviews`, () => {
     const testUsers = helpers.makeUsersArray();
     context(`Given no things`, () => {
-      beforeEach('insert Users only', () => {
-        return db
-          .into('thingful_users')
-          .insert(testUsers)
-      })
+      beforeEach('insert Users only', () => 
+        helpers.seedUsers(db, testUsers)
+      )
       it(`responds with 404`, () => {
         const thingId = 123456
         return supertest(app)
