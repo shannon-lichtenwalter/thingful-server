@@ -23,7 +23,7 @@ function requireAuth(req,res,next) {
       if (!user) {
         return res.status(401).json({error: 'Unauthorized Request'});
       }
-      return bcrypt.compare(tokenPassword, user.password)
+      return AuthService.comparePasswords(tokenPassword, user.password)
         .then(passwordsMatch => {
           if(!passwordsMatch) {
             return res.status(401).json({error: 'Unauthorized Request'});
