@@ -25,15 +25,14 @@ authRouter
             if (!passwordsMatch) {
               return res.status(400).json({ error: 'Incorrect user_name or password' });
             }
+            
             const sub = user.user_name;
             const payload = { user_id: user.id };
-            
+
             res.send({
               authToken: AuthService.createJwt(sub, payload)
             });
           });
-        req.user = user;
-        next();
       })
       .catch(next);
   });
